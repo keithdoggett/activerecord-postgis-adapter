@@ -20,8 +20,9 @@ addons:
       - postgresql-12-postgis-3
       - postgresql-12-postgis-3-scripts
 env:
-  - PGVER=12
-  - PGPORT=5432
+  global:
+    - PGVER=12
+    - PGPORT=5432
 before_script:
   - psql -U postgres -c "create database postgis_adapter_test"
   - psql -U postgres -d postgis_adapter_test -c "create extension postgis"
