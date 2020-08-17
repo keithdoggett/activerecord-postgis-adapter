@@ -12,8 +12,7 @@ matrix:
             - postgresql-10-postgis-2.4-scripts
             - postgresql-client-10
       env:
-        global:
-          - PGPORT=5432
+        - PGPORT=5432
     - rvm: 2.7
       addons:
         postgresql: "10"
@@ -23,9 +22,7 @@ matrix:
             - postgresql-10-postgis-3-scripts
             - postgresql-client-10
       env:
-        global:
-          - PGHOST=""
-          - PGPORT=5433
+        - PGPORT=5433
     - rvm: 2.7
       addons:
         postgresql: "11"
@@ -36,9 +33,7 @@ matrix:
             - postgresql-11-postgis-3
             - postgresql-11-postgis-3-scripts
       env:
-        global:
-          - PGVER=11
-          - PGPORT=5433
+        - PGPORT=5433
       before_install:
         - sudo cp /etc/postgresql/10/main/pg_hba.conf /etc/postgresql/11/main/pg_hba.conf
         - sudo pg_ctlcluster 11 main restart
@@ -52,8 +47,7 @@ matrix:
             - postgresql-12-postgis-3
             - postgresql-12-postgis-3-scripts
       env:
-        global:
-          - PGPORT=5433
+        - PGPORT=5433
       before_install:
         - sudo cp /etc/postgresql/10/main/pg_hba.conf /etc/postgresql/12/main/pg_hba.conf
         - sudo pg_ctlcluster 12 main restart
