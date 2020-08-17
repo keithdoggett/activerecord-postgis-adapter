@@ -24,6 +24,7 @@ addons:
         - PGVER=12
         - PGPORT=5433
 before_script:
+  - psql --version
   - sudo cp /etc/postgresql/10/main/pg_hba.conf /etc/postgresql/$PGVER/main/pg_hba.conf
   - sudo pg_ctlcluster 12 main restart
   - psql -U postgres -c "create database postgis_adapter_test"
