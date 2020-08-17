@@ -22,7 +22,7 @@ matrix:
             - postgresql-10-postgis-3-scripts
             - postgresql-client-10
       env:
-        - PGPORT=5433
+        - PGPORT=5432
     - rvm: 2.7
       addons:
         postgresql: "11"
