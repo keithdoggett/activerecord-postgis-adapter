@@ -18,6 +18,8 @@ matrix:
             - postgresql-client-10
       env:
         - PGPORT=5432
+      before_install:
+        - psql --version
     - rvm: 2.7
       addons:
         postgresql: "11"
