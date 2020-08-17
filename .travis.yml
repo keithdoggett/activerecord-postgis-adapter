@@ -24,7 +24,9 @@ matrix:
             - postgresql-10-postgis-3-scripts
             - postgresql-client-10
       env:
-        - PGVER=10
+        global:
+          - PGHOST=""
+          - PGPORT=5432
     - rvm: 2.7
       addons:
         postgresql: "11"
@@ -35,7 +37,9 @@ matrix:
             - postgresql-11-postgis-3
             - postgresql-11-postgis-3-scripts
       env:
-        - PGVER=11
+        global:
+          - PGVER=11
+          - PGPORT=5433
     - rvm: 2.7
       addons:
         postgresql: "12"
@@ -46,16 +50,15 @@ matrix:
             - postgresql-12-postgis-3
             - postgresql-12-postgis-3-scripts
       env:
-        - PGVER=12
+        global:
+          - PGPORT=5433
+          - PGVER=12
       before_install:
         - psql --version
         - sudo cp /etc/postgresql/10/main/pg_hba.conf /etc/postgresql/$PGVER/main/pg_hba.conf
         - sudo pg_ctlcluster 12 main restart
   allow_failures:
     - rvm: jruby-9.2.6.0
-env:
-  global:
-    - PGPORT=5433
 services:
   - postgresql
 before_script:
