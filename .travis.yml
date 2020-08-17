@@ -1,7 +1,4 @@
 language: ruby
-rvm:
-  - 2.7
-
 gemfile:
   - gemfiles/ar60.gemfile
 matrix:
@@ -15,7 +12,9 @@ matrix:
             - postgresql-10-postgis-2.4-scripts
             - postgresql-client-10
       env:
-        - PGVER=10
+        global:
+          - PGHOST=""
+          - PGPORT=5432
     - rvm: 2.7
       addons:
         postgresql: "10"
