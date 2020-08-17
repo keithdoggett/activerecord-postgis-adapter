@@ -1,4 +1,9 @@
 language: ruby
+rvm:
+  - 2.7
+  - 2.6
+  - 2.5
+  - jruby-9.2.6.0
 gemfile:
   - gemfiles/ar60.gemfile
 matrix:
@@ -27,26 +32,22 @@ matrix:
       before_install:
         - sudo cp /etc/postgresql/10/main/pg_hba.conf /etc/postgresql/11/main/pg_hba.conf
         - sudo pg_ctlcluster 11 main restart
-    - rvm:
-        - 2.7
-        - 2.6
-        - 2.5
-        - jruby-9.2.6.0
-      addons:
-        postgresql: "12"
-        apt:
-          packages:
-            - postgresql-12
-            - postgresql-client-12
-            - postgresql-12-postgis-3
-            - postgresql-12-postgis-3-scripts
-      env:
-        - PGPORT=5433
-      before_install:
-        - sudo cp /etc/postgresql/10/main/pg_hba.conf /etc/postgresql/12/main/pg_hba.conf
-        - sudo pg_ctlcluster 12 main restart
   allow_failures:
     - rvm: jruby-9.2.6.0
+addons:
+  postgresql: "12"
+  apt:
+    packages:
+      - postgresql-12
+      - postgresql-client-12
+      - postgresql-12-postgis-3
+      - postgresql-12-postgis-3-scripts
+env:
+  global:
+    - PGPORT=5433
+before_install:
+  - sudo cp /etc/postgresql/10/main/pg_hba.conf /etc/postgresql/12/main/pg_hba.conf
+  - sudo pg_ctlcluster 12 main restart
 services:
   - postgresql
 before_script:
