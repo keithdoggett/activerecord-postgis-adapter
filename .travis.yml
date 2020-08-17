@@ -9,6 +9,8 @@ gemfile:
 matrix:
   allow_failures:
     - rvm: jruby-9.2.6.0
+services:
+  - postgresql
 addons:
   postgresql: "12"
   apt:
@@ -21,6 +23,9 @@ env:
   global:
     - PGVER=12
     - PGPORT=5433
+before_install:
+  - sudo cp /etc/postgresql/10/main/pg_hba.conf /etc/postgresql/12/main/pg_hba.conf
+  - sudo pg_ctlcluster 12 main restart
 before_script:
   - psql -U postgres -c "create database postgis_adapter_test"
   - psql -U postgres -d postgis_adapter_test -c "create extension postgis"
