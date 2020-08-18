@@ -11,6 +11,12 @@ matrix:
   # only testing against the latest ruby version for these
   include:
     - rvm: 2.7
+    addons:
+      postgresql: 9.6
+      apt:
+        packages:
+        - postgresql-9.6-postgis-2.3
+    - rvm: 2.7
       addons:
         postgresql: "11"
         apt:
