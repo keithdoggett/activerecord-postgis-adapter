@@ -45,7 +45,7 @@ matrix:
         - sudo cp /etc/postgresql/10/main/pg_hba.conf /etc/postgresql/12/main/pg_hba.conf
         - sudo pg_ctlcluster 12 main restart
   allow_failures:
-    - rvm: jruby-9.2.6.0
+    - rvm: jruby-9.2.11.1
 addons:
   postgresql: "10"
   apt:
