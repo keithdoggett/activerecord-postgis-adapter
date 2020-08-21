@@ -53,7 +53,7 @@ matrix:
             - postgresql-10-postgis-2.4
             - postgresql-10-postgis-2.4-scripts
             - postgresql-client-10
-            update: true
+          update: true
   allow_failures:
     - rvm: jruby-9.2.11.1
 addons:
