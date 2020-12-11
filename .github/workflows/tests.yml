@@ -1,0 +1,31 @@
+name: Tests
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        ruby: [2.7, 2.6, 2.5, jruby]
+        BUNDLE_GEMFILE:
+          - gemfiles/ar60.gemfile
+        pg: [9, 10, 11, 12, 13]
+        os: ["ubuntu-latest"]
+    steps:
+      - name: Set Up Gems
+        uses: actions/checkout@v2
+      - name: Set Up Postgresql
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: ${{ matrix.pg }}
+      - name: Set Up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Create DB
+        run:
+          - psql -U postgres -c "create database postgis_adapter_test"
+          - psql -U postgres -d postgis_adapter_test -c "create extension postgis"
+      - name: Run Tests
+        run: bundle exec rake test
