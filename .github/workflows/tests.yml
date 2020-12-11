@@ -9,6 +9,11 @@ jobs:
         image: postgres:${{ matrix.pg }}
         ports:
           - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     strategy:
       matrix:
         ruby: [2.7, 2.6, 2.5]
@@ -36,70 +41,70 @@ jobs:
           POSTGRES_PORT: 5432
       - name: Run Tests
         run: bundle exec rake test
-  test-ubuntu-pg-9-10:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:${{ matrix.pg }}
-        ports:
-          - 5432:5432
-    strategy:
-      matrix:
-        ruby: [2.7, 2.6, 2.5]
-        BUNDLE_GEMFILE:
-          - gemfiles/ar60.gemfile
-        pg: [9, 10]
-    steps:
-      - name: Set Up Gems
-        uses: actions/checkout@v2
-      - name: Set Up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
-      - name: Install PostGIS
-        run: |
-          sudo apt-get install postgresql-${{matrix.pg}}-postgis-2.4
-          sudo apt-get install postgresql-${{matrix.pg}}-postgis-2.4-scripts
-      - name: Create DB and PostGIS Extension
-        run: |
-          psql -U postgres -c "create database postgis_adapter_test"
-          psql -U postgres -d postgis_adapter_test -c "create extension postgis"
-        env:
-          PGHOST: postsgres
-      - name: Run Tests
-        run: bundle exec rake test
-  test-mac-os:
-    runs-on: macos-latest
-    services:
-      postgres:
-        image: postgres:${{ matrix.pg }}
-        ports:
-          - 5432:5432
-    strategy:
-      matrix:
-        ruby: [2.7, 2.6, 2.5]
-        BUNDLE_GEMFILE:
-          - gemfiles/ar60.gemfile
-        pg: [12, 13]
-    steps:
-      - name: Set Up Gems
-        uses: actions/checkout@v2
-      - name: Set Up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
-      - name: Install PostGIS
-        run: |
-          brew install geos
-          brew install postgresql-${{matrix.pg}}-postgis-3
-          brew install postgresql-${{matrix.pg}}-postgis-3-scripts
-      - name: Create DB and PostGIS Extension
-        run: |
-          psql -U postgres -c "create database postgis_adapter_test"
-          psql -U postgres -d postgis_adapter_test -c "create extension postgis"
-        env:
-          PGHOST: postsgres
-      - name: Run Tests
-        run: bundle exec rake test
+  # test-ubuntu-pg-9-10:
+  #   runs-on: ubuntu-latest
+  #   services:
+  #     postgres:
+  #       image: postgres:${{ matrix.pg }}
+  #       ports:
+  #         - 5432:5432
+  #   strategy:
+  #     matrix:
+  #       ruby: [2.7, 2.6, 2.5]
+  #       BUNDLE_GEMFILE:
+  #         - gemfiles/ar60.gemfile
+  #       pg: [9, 10]
+  #   steps:
+  #     - name: Set Up Gems
+  #       uses: actions/checkout@v2
+  #     - name: Set Up Ruby
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: ${{ matrix.ruby }}
+  #         bundler-cache: true
+  #     - name: Install PostGIS
+  #       run: |
+  #         sudo apt-get install postgresql-${{matrix.pg}}-postgis-2.4
+  #         sudo apt-get install postgresql-${{matrix.pg}}-postgis-2.4-scripts
+  #     - name: Create DB and PostGIS Extension
+  #       run: |
+  #         psql -U postgres -c "create database postgis_adapter_test"
+  #         psql -U postgres -d postgis_adapter_test -c "create extension postgis"
+  #       env:
+  #         PGHOST: postsgres
+  #     - name: Run Tests
+  #       run: bundle exec rake test
+  # test-mac-os:
+  #   runs-on: macos-latest
+  #   services:
+  #     postgres:
+  #       image: postgres:${{ matrix.pg }}
+  #       ports:
+  #         - 5432:5432
+  #   strategy:
+  #     matrix:
+  #       ruby: [2.7, 2.6, 2.5]
+  #       BUNDLE_GEMFILE:
+  #         - gemfiles/ar60.gemfile
+  #       pg: [12, 13]
+  #   steps:
+  #     - name: Set Up Gems
+  #       uses: actions/checkout@v2
+  #     - name: Set Up Ruby
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: ${{ matrix.ruby }}
+  #         bundler-cache: true
+  #     - name: Install PostGIS
+  #       run: |
+  #         brew install geos
+  #         brew install postgresql-${{matrix.pg}}-postgis-3
+  #         brew install postgresql-${{matrix.pg}}-postgis-3-scripts
+  #     - name: Create DB and PostGIS Extension
+  #       run: |
+  #         psql -U postgres -c "create database postgis_adapter_test"
+  #         psql -U postgres -d postgis_adapter_test -c "create extension postgis"
+  #       env:
+  #         PGHOST: postsgres
+  #     - name: Run Tests
+  #       run: bundle exec rake test
