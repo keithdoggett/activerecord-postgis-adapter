@@ -9,6 +9,8 @@ jobs:
         image: postgres:${{ matrix.pg }}
         ports:
           - 5432:5432
+        env:
+          POSTGRES_HOST: localhost
     strategy:
       matrix:
         ruby: [2.7, 2.6, 2.5]
