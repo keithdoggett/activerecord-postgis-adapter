@@ -23,7 +23,7 @@ jobs:
         ruby: [2.7, 2.6, 2.5]
         BUNDLE_GEMFILE:
           - gemfiles/ar60.gemfile
-          - gemfiles/ar61.gemfile
+          # - gemfiles/ar61.gemfile
         pg: [11, 12, 13]
     steps:
       - name: Set Up Gems
@@ -32,7 +32,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
-          # bundler-cache: true
+          bundler-cache: true
       - name: Install PostGIS
         run: |
           sudo apt-get install postgresql-${{matrix.pg}}-postgis-3
