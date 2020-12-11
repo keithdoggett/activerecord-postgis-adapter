@@ -28,6 +28,6 @@ jobs:
         env: PGPORT=5433
       - name: Add PostGIS Extension
         run: psql -U postgres -d postgis_adapter_test -c "create extension postgis"
-        env: PGPORT=5433
+        env: PGPORT: 5433
       - name: Run Tests
         run: bundle exec rake test
