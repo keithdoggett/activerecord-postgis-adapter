@@ -39,9 +39,6 @@ jobs:
         run: |
           psql -U postgres -c "create database postgis_adapter_test"
           psql -U postgres -d postgis_adapter_test -c "create extension postgis"
-        env:
-          POSTGRES_HOST: postgres
-          POSTGRES_PORT: 5432
       - name: Run Tests
         run: bundle exec rake test
   # test-ubuntu-pg-9-10:
