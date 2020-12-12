@@ -43,6 +43,8 @@ jobs:
           docker exec -d postgres psql -U postgres -d postgis_adapter_test -c "create extension postgis"
       - name: Run Tests
         run: bundle exec rake test
+        env:
+          PGPASSWORD: postgres
   test-ubuntu-pg-9-10:
     runs-on: ubuntu-latest
     services:
@@ -84,6 +86,8 @@ jobs:
           docker exec -d postgres psql -U postgres -d postgis_adapter_test -c "create extension postgis"
       - name: Run Tests
         run: bundle exec rake test
+        env:
+          PGPASSWORD: postgres
   test-mac-os:
     runs-on: macos-latest
     services:
@@ -125,3 +129,5 @@ jobs:
           docker exec -d postgres psql -U postgres -d postgis_adapter_test -c "create extension postgis"
       - name: Run Tests
         run: bundle exec rake test
+        env:
+          PGPASSWORD: postgres
