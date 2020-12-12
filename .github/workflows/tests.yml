@@ -34,9 +34,9 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - name: Create DB and PostGIS Extension
-        run: docker exec -d postgres psql -U postgres -c "create database postgis_adapter_test"
+        run: postgres psql -U postgres -c "create database postgis_adapter_test"
       - name: Create PostGIS Extension
-        run: docker exec -d postgres psql -U postgres -d postgis_adapter_test -c "create extension postgis"
+        run: postgres psql -U postgres -d postgis_adapter_test -c "create extension postgis"
       - name: Run Tests
         run: bundle exec rake test
         env:
