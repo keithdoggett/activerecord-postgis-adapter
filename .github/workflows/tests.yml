@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Set Up Gems
         uses: actions/checkout@v2
+      - name: Install PG Client
+        run: sudo apt-get install postgresql-client-${{ matrix.pg }}
       - name: Set Up Geos
         run: sudo apt-get install libgeos-dev
       - name: Install PostGIS
