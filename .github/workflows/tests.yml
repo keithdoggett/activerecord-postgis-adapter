@@ -33,10 +33,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - name: Install PostGIS
-        run: |
-          sudo apt-get install postgresql-${{matrix.pg}}-postgis-3
-          sudo apt-get install postgresql-${{matrix.pg}}-postgis-3-scripts
       - name: Create DB and PostGIS Extension
         run: |
           docker exec -d postgres psql -U postgres -c "create database postgis_adapter_test"
