@@ -34,11 +34,11 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - name: Create Database
-        run: docker exec -d postgis psql -U postgres -c "create database postgis_adapter_test"
+        run: docker exec -d postgres psql -U postgres -c "create database postgis_adapter_test"
       - name: Create PostGIS Extension
-        run: docker exec -d postgis psql -U postgres -d postgis_adapter_test -c "create extension postgis"
+        run: docker exec -d postgres psql -U postgres -d postgis_adapter_test -c "create extension postgis"
       - name: Test PostGIS
-        run: docker exec -d postgis psql -U postgres -d postgis_adapter_test -c "SELECT ST_IsValid(ST_MakePoint(1,2))"
+        run: docker exec -d postgres psql -U postgres -d postgis_adapter_test -c "SELECT ST_IsValid(ST_MakePoint(1,2))"
       - name: Run Tests
         run: bundle exec rake test
 
