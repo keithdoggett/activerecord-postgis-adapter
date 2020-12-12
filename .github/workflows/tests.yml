@@ -43,6 +43,7 @@ jobs:
         run: bundle exec rake test
         env:
           PGHOST: localhost
+          PGPASSWORD: postgres
 
   # test-ubuntu-pg-9-10:
   #   runs-on: ubuntu-latest
