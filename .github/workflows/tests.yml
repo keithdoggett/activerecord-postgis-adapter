@@ -50,8 +50,9 @@ jobs:
       - name: Run Tests
         run: bundle exec rake test
         env:
-          PGHOST: postgres
+          PGHOST: localhost
           PGPASSWORD: postgres
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
   # test-ubuntu-pg-9-10:
   #   runs-on: ubuntu-latest
   #   services:
