@@ -41,6 +41,8 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+      - name: Start Postgres
+        run: sudo service postgresql start
       - name: Create DB and PostGIS Extension
         run: docker exec -d postgres psql -U postgres -c "create database postgis_adapter_test"
       - name: Create PostGIS Extension
