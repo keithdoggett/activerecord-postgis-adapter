@@ -11,7 +11,8 @@ class TasksTest < ActiveSupport::TestCase
 
   def test_create_database_from_extension_in_separate_schema
     drop_db_if_exists
-    configuration = new_connection.merge("postgis_schema" => "postgis")
+    new_config = new_connection.configuration_hash.merge(postgis_schema: "postgis")
+    configuration = ActiveRecord::DatabaseConfigurations::HashConfig.new("test", "primary", new_config)
     ActiveRecord::Tasks::DatabaseTasks.create(configuration)
     refute_empty connection.select_values("SELECT * from postgis.spatial_ref_sys")
   end
@@ -128,7 +129,8 @@ class TasksTest < ActiveSupport::TestCase
   private
 
   def new_connection
-    ActiveRecord::Base.test_connection_hash.merge("database" => "postgis_tasks_test")
+    hash = ActiveRecord::Base.test_connection_hash.merge("database" => "postgis_tasks_test")
+    ActiveRecord::DatabaseConfigurations::HashConfig.new("test", "primary", hash)
   end
   
   def connection
@@ -144,13 +146,13 @@ class TasksTest < ActiveSupport::TestCase
     FileUtils.mkdir_p(File.dirname(tmp_sql_filename))
     drop_db_if_exists
     ActiveRecord::ConnectionAdapters::PostGIS::PostGISDatabaseTasks.new(new_connection).create
-  rescue ActiveRecord::Tasks::DatabaseAlreadyExists
+  rescue ActiveRecord::DatabaseAlreadyExists
     # ignore
   end
 
   def drop_db_if_exists
     ActiveRecord::ConnectionAdapters::PostGIS::PostGISDatabaseTasks.new(new_connection).drop
-  rescue ActiveRecord::Tasks::DatabaseAlreadyExists
+  rescue ActiveRecord::DatabaseAlreadyExists
     # ignore
   end
 end
