@@ -4,20 +4,20 @@ on: [push, pull_request]
 jobs:
   test-ubuntu-pg-11-plus:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:${{matrix.pg}}
-        ports:
-          - 5432/tcp
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --name=postgres
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   postgres:
+    #     image: postgres:${{matrix.pg}}
+    #     ports:
+    #       - 5432/tcp
+    #     env:
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: postgres
+    #     options: >-
+    #       --name=postgres
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
     strategy:
       matrix:
         ruby: [2.7, 2.6, 2.5]
@@ -28,34 +28,25 @@ jobs:
     steps:
       - name: Set Up Gems
         uses: actions/checkout@v2
-      - name: Install PG Client
-        run: sudo apt-get install postgresql-client-${{ matrix.pg }}
-      - name: Set Up Geos
-        run: sudo apt-get install libgeos-dev
-      - name: Install PostGIS
-        run: sudo apt-get install postgresql-${{ matrix.pg }}-postgis-3
-      - name: Install PostGIS Scripts
-        run: sudo apt-get install postgresql-${{ matrix.pg }}-postgis-3-scripts
+      - name: Set Up PostGIS
+        uses: nyaruka/postgis-action@v1
+        with:
+          postgresql version: $ {{matrix.pg}}
+          postgresql user: postgres
+          postgresql password: postgres
       - name: Set Up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - name: Change Postgres Peer Auth
-        run: sudo sed -i -e '/local.*peer/s/postgres/all/' -e 's/peer\|md5/trust/g' /etc/postgresql/*/main/pg_hba.conf
-      - name: Start Postgres
-        run: sudo service postgresql start
-      - name: Create DB and PostGIS Extension
-        run: docker exec -d postgres psql -U postgres -c "create database postgis_adapter_test"
+        run: docker exec -d postgis psql -U postgres -c "create database postgis_adapter_test"
       - name: Create PostGIS Extension
-        run: docker exec -d postgres psql -U postgres -d postgis_adapter_test -c "create extension postgis"
+        run: docker exec -d postgis psql -U postgres -d postgis_adapter_test -c "create extension postgis"
       - name: Test PostGIS
-        run: docker exec -d postgres psql -U postgres -d postgis_adapter_test -c "SELECT ST_IsValid(ST_MakePoint(1,2))"
+        run: docker exec -d postgis psql -U postgres -d postgis_adapter_test -c "SELECT ST_IsValid(ST_MakePoint(1,2))"
       - name: Run Tests
         run: bundle exec rake test
-        env:
-          PGHOST: postgres
-          PGPORT: ${{ job.services.postgres.ports[5432] }}
+
   # test-ubuntu-pg-9-10:
   #   runs-on: ubuntu-latest
   #   services:
