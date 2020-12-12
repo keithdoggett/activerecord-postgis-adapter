@@ -26,8 +26,10 @@ jobs:
           # - gemfiles/ar61.gemfile
         pg: [11-3.0, 12-master, 13-master]
     steps:
-      - name: Set Up Gems
+      - name: Set Up Actions
         uses: actions/checkout@v2
+      - name: Install GEOS
+        uses: sudo apt-get install libgeos-dev
       - name: Set Up Ruby
         uses: ruby/setup-ruby@v1
         with:
