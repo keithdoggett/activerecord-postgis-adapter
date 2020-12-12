@@ -41,6 +41,8 @@ jobs:
         run: docker exec -d postgres psql -U postgres -d postgis_adapter_test -c "SELECT ST_IsValid(ST_MakePoint(1,2))"
       - name: Run Tests
         run: bundle exec rake test
+        env:
+          PGHOST: postgresql://postgres
 
   # test-ubuntu-pg-9-10:
   #   runs-on: ubuntu-latest
