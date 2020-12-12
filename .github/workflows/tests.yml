@@ -50,6 +50,7 @@ jobs:
       - name: Run Tests
         run: bundle exec rake test
         env:
+          PGHOST: postgres
           PGPASSWORD: postgres
   # test-ubuntu-pg-9-10:
   #   runs-on: ubuntu-latest
