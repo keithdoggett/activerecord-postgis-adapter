@@ -38,11 +38,9 @@ jobs:
       - name: Bundle install
         run: bundle install
       - name: Create Database
-        run: psql -h postgres -U postgres -c "create database postgis_adapter_test"
+        run: psql -d postgresql://postgres:postgres@localhost:5432/postgres -c "create database postgis_adapter_test"
       - name: Create PostGIS Extension
-        run: psql -h postgres -U postgres -d postgis_adapter_test -c "create extension postgis"
-      - name: Test PostGIS
-        run: docker exec -d postgres psql -U postgres -d postgis_adapter_test -c "SELECT ST_IsValid(ST_MakePoint(1,2))"
+        run: psql -d postgresql://postgres:postgres@localhost:5432/postgis_adapter_test -c "create extension postgis"
       - name: Run Tests
         run: bundle exec rake test
         env:
