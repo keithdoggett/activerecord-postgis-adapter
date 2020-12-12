@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgis:
-        image: postgis/postgis:${{ matrix.pg }}
+        image: postgres:${{matrix.pg}}
         ports:
           - 5432:5432
         env:
@@ -24,12 +24,14 @@ jobs:
         BUNDLE_GEMFILE:
           - gemfiles/ar60.gemfile
           # - gemfiles/ar61.gemfile
-        pg: [11-3.0, 12-master, 13-master]
+        pg: [11, 12, 13]
     steps:
       - name: Set Up Gems
         uses: actions/checkout@v2
       - name: Set Up Geos
         run: sudo apt-get install libgeos-dev
+      - name: Install PostGIS
+        run: sudo apt-get install postgresql-${{ matrix.pg }}-postgis-3
       - name: Install PostGIS Scripts
         run: sudo apt-get install postgresql-${{ matrix.pg }}-postgis-3-scripts
       - name: Set Up Ruby
