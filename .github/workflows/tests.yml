@@ -30,6 +30,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Set Up Geos
         run: sudo apt-get install libgeos-dev
+      - name: Install PostGIS Scripts
+        run: sudo apt-get install postgresql-${{ matrix.pg }}-postgis-3-scripts
       - name: Set Up Ruby
         uses: ruby/setup-ruby@v1
         with:
