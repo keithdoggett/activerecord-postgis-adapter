@@ -8,7 +8,7 @@ jobs:
       postgis:
         image: postgis/postgis:${{matrix.pg}}
         ports:
-          - 5432/tcp
+          - 5432:5432
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -42,7 +42,7 @@ jobs:
       - name: Run Tests
         run: bundle exec rake test
         env:
-          PGHOST: postgresql://postgres
+          PGHOST: localhost
 
   # test-ubuntu-pg-9-10:
   #   runs-on: ubuntu-latest
