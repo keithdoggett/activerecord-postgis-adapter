@@ -34,8 +34,8 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
       - name: Bundle Install
-      - name: Create Database
         run: bundle install
+      - name: Create Database
         run: psql -d postgresql://postgres:postgres@localhost:5432/postgres -c "create database postgis_adapter_test"
       - name: Create PostGIS Extension
         run: psql -d postgresql://postgres:postgres@localhost:5432/postgis_adapter_test -c "create extension postgis"
