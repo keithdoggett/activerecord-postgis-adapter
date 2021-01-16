@@ -29,6 +29,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Install GEOS
         run: sudo apt-get install libgeos-dev
+      - name: Install Rake
+        run: sudo gem install rake
       - name: Set Up Ruby
         uses: ruby/setup-ruby@v1
         with:
